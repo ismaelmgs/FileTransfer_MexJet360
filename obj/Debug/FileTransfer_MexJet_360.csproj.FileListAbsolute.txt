@@ -1,0 +1,9 @@
+E:\AerolineasEjecutivas\Codigos\FileTransferMexJet360\FileTransfer_MexJet_360\obj\Debug\FileTransfer_MexJet_360.csprojAssemblyReference.cache
+E:\AerolineasEjecutivas\Codigos\FileTransferMexJet360\FileTransfer_MexJet_360\obj\Debug\FileTransfer_MexJet_360.csproj.CoreCompileInputs.cache
+E:\AerolineasEjecutivas\Codigos\FileTransferMexJet360\FileTransfer_MexJet_360\bin\Debug\FileTransfer_MexJet_360.exe
+E:\AerolineasEjecutivas\Codigos\FileTransferMexJet360\FileTransfer_MexJet_360\bin\Debug\FileTransfer_MexJet_360.pdb
+E:\AerolineasEjecutivas\Codigos\FileTransferMexJet360\FileTransfer_MexJet_360\bin\Debug\NucleoBase.dll
+E:\AerolineasEjecutivas\Codigos\FileTransferMexJet360\FileTransfer_MexJet_360\obj\Debug\FileTransfer_MexJet_360.csproj.CopyComplete
+E:\AerolineasEjecutivas\Codigos\FileTransferMexJet360\FileTransfer_MexJet_360\obj\Debug\FileTransfer_MexJet_360.exe
+E:\AerolineasEjecutivas\Codigos\FileTransferMexJet360\FileTransfer_MexJet_360\obj\Debug\FileTransfer_MexJet_360.pdb
+E:\AerolineasEjecutivas\Codigos\FileTransferMexJet360\FileTransfer_MexJet_360\bin\Debug\FileTransfer_MexJet_360.exe.config
