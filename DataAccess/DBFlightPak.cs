@@ -4,6 +4,7 @@
 // MVID: 51C0F2EE-2D8C-4E2B-B102-38D0C4F03E12
 // Assembly location: E:\AerolineasEjecutivas\Codigos\FileTransferMexJet360\ejecutable\FileTransfer_MexJet_360.exe
 
+using FileTransfer_MexJet_360.Clases;
 using System;
 using System.Configuration;
 using System.Data;
@@ -12,28 +13,28 @@ using System.IO;
 
 namespace FileTransfer_MexJet_360.DataAccess
 {
-  public class DBFlightPak : DBBase
-  {
-    private DBALEMexJet oDBALE = new DBALEMexJet();
-    private OleDbConnection oConnection = new OleDbConnection();
-    public static string CadenaOleDbConnection;
-
-    public bool TestConnection()
+    public class DBFlightPak : DBBase
     {
-      try
-      {
-        DBFlightPak.CadenaOleDbConnection = "Provider = VFPOLEDB.1;Data Source= " + ConfigurationManager.AppSettings["BASEDATOS"].ToString();
-        this.oConnection.ConnectionString = DBFlightPak.CadenaOleDbConnection;
-        this.oConnection.Open();
-        return true;
-      }
-      catch (Exception ex)
-      {
-        throw ex;
-      }
-    }
+        private DBALEMexJet oDBALE = new DBALEMexJet();
+        private OleDbConnection oConnection = new OleDbConnection();
+        public static string CadenaOleDbConnection;
 
-    public bool RespaldarBaseDatos()
+        public bool TestConnection()
+        {
+            try
+            {
+                DBFlightPak.CadenaOleDbConnection = "Provider = VFPOLEDB.1;Data Source= " + ConfigurationManager.AppSettings["BASEDATOS"].ToString();
+                this.oConnection.ConnectionString = DBFlightPak.CadenaOleDbConnection;
+                this.oConnection.Open();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool RespaldarBaseDatos()
     {
       try
       {
@@ -200,13 +201,17 @@ namespace FileTransfer_MexJet_360.DataAccess
           strArray1[12] = ")ORDER BY LASTUPDT DESC";
           cmdText = string.Concat(strArray1);
         }
-        new OleDbDataAdapter(new OleDbCommand(cmdText, this.oConnection)).Fill(dataSet);
-        return dataSet;
+
+                string sQuery = "SELECT * FROM OPENQUERY(" + MyGlobals.LinkedServer +", '" + cmdText + "')";
+
+                dataSet = new DBBaseFPK().oBD_SP.EjecutarDS_DeQuery(sQuery);
+                //new OleDbDataAdapter(new OleDbCommand(cmdText, this.oConnection)).Fill(dataSet);
+                return dataSet;
       }
-      catch (Exception ex)
-      {
-        throw ex;
-      }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
     }
 
     public DataSet getRegistrosPilotos()
@@ -394,63 +399,66 @@ namespace FileTransfer_MexJet_360.DataAccess
 
     public DataSet getRegistrosTripLeg()
     {
-      DataSet dataSet = new DataSet();
-      try
-      {
-        string cmdText;
-        if (string.IsNullOrEmpty(DBALEMexJet.sUltimaCargaTripLegs))
+        DataSet dataSet = new DataSet();
+        try
         {
-          cmdText = "SELECT orig_nmbr,leg_num,depicao_id,arricao_id,gmtdep,gmtarr,homdep,homarr,purpose,cat_code,pax_total,client,legid,pic,sic,fltno,LASTUSER, LASTUPDT FROM TRIPLEG ORDER BY LASTUPDT DESC ";
+            string cmdText;
+            if (string.IsNullOrEmpty(DBALEMexJet.sUltimaCargaTripLegs))
+            {
+                cmdText = "SELECT orig_nmbr,leg_num,depicao_id,arricao_id,gmtdep,gmtarr,homdep,homarr,purpose,cat_code,pax_total,client,legid,pic,sic,fltno,LASTUSER, LASTUPDT FROM TRIPLEG ORDER BY LASTUPDT DESC ";
+            }
+            else
+            {
+                string[] strArray1 = new string[13];
+                strArray1[0] = "SELECT orig_nmbr,leg_num,depicao_id,arricao_id,gmtdep,gmtarr,homdep,homarr,purpose,cat_code,pax_total,client,legid,pic,sic,fltno,LASTUSER, LASTUPDT FROM TRIPLEG  WHERE LASTUPDT > DATETIME(";
+                string[] strArray2 = strArray1;
+                DateTime dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaTripLegs);
+                int num = dateTime.Year;
+                string str1 = num.ToString();
+                strArray2[1] = str1;
+                strArray1[2] = ", ";
+                string[] strArray3 = strArray1;
+                dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaTripLegs);
+                num = dateTime.Month;
+                string str2 = num.ToString();
+                strArray3[3] = str2;
+                strArray1[4] = ", ";
+                string[] strArray4 = strArray1;
+                dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaTripLegs);
+                num = dateTime.Day;
+                string str3 = num.ToString();
+                strArray4[5] = str3;
+                strArray1[6] = ", ";
+                string[] strArray5 = strArray1;
+                dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaTripLegs);
+                num = dateTime.Hour;
+                string str4 = num.ToString();
+                strArray5[7] = str4;
+                strArray1[8] = ", ";
+                string[] strArray6 = strArray1;
+                dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaTripLegs);
+                num = dateTime.Minute;
+                string str5 = num.ToString();
+                strArray6[9] = str5;
+                strArray1[10] = ", ";
+                string[] strArray7 = strArray1;
+                dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaTripLegs);
+                num = dateTime.Second;
+                string str6 = num.ToString();
+                strArray7[11] = str6;
+                strArray1[12] = ")ORDER BY LASTUPDT DESC";
+                cmdText = string.Concat(strArray1);
+            }
+
+            string sQuery = "SELECT * FROM OPENQUERY(" +  + ", 'cmdText')";
+
+            new OleDbDataAdapter(new OleDbCommand(cmdText, this.oConnection)).Fill(dataSet);
+            return dataSet;
         }
-        else
+        catch (Exception ex)
         {
-          string[] strArray1 = new string[13];
-          strArray1[0] = "SELECT orig_nmbr,leg_num,depicao_id,arricao_id,gmtdep,gmtarr,homdep,homarr,purpose,cat_code,pax_total,client,legid,pic,sic,fltno,LASTUSER, LASTUPDT FROM TRIPLEG  WHERE LASTUPDT > DATETIME(";
-          string[] strArray2 = strArray1;
-          DateTime dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaTripLegs);
-          int num = dateTime.Year;
-          string str1 = num.ToString();
-          strArray2[1] = str1;
-          strArray1[2] = ", ";
-          string[] strArray3 = strArray1;
-          dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaTripLegs);
-          num = dateTime.Month;
-          string str2 = num.ToString();
-          strArray3[3] = str2;
-          strArray1[4] = ", ";
-          string[] strArray4 = strArray1;
-          dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaTripLegs);
-          num = dateTime.Day;
-          string str3 = num.ToString();
-          strArray4[5] = str3;
-          strArray1[6] = ", ";
-          string[] strArray5 = strArray1;
-          dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaTripLegs);
-          num = dateTime.Hour;
-          string str4 = num.ToString();
-          strArray5[7] = str4;
-          strArray1[8] = ", ";
-          string[] strArray6 = strArray1;
-          dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaTripLegs);
-          num = dateTime.Minute;
-          string str5 = num.ToString();
-          strArray6[9] = str5;
-          strArray1[10] = ", ";
-          string[] strArray7 = strArray1;
-          dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaTripLegs);
-          num = dateTime.Second;
-          string str6 = num.ToString();
-          strArray7[11] = str6;
-          strArray1[12] = ")ORDER BY LASTUPDT DESC";
-          cmdText = string.Concat(strArray1);
+            throw ex;
         }
-        new OleDbDataAdapter(new OleDbCommand(cmdText, this.oConnection)).Fill(dataSet);
-        return dataSet;
-      }
-      catch (Exception ex)
-      {
-        throw ex;
-      }
     }
 
     public DataSet getRegistrosBitacoras()

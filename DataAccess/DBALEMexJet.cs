@@ -11,6 +11,7 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using NucleoBase.Core;
 
 namespace FileTransfer_MexJet_360.DataAccess
 {
@@ -535,5 +536,18 @@ namespace FileTransfer_MexJet_360.DataAccess
         throw ex;
       }
     }
+
+
+        public string ObtieneParametroPorClave(string sClave)
+        {
+            try
+            {
+                return oBD_SP.EjecutarValor("", "", sClave).S();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
   }
 }
