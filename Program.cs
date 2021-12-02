@@ -4,6 +4,7 @@
 // MVID: 51C0F2EE-2D8C-4E2B-B102-38D0C4F03E12
 // Assembly location: E:\AerolineasEjecutivas\Codigos\FileTransferMexJet360\ejecutable\FileTransfer_MexJet_360.exe
 
+using FileTransfer_MexJet_360.Clases;
 using FileTransfer_MexJet_360.DataAccess;
 using System;
 using System.IO;
@@ -28,16 +29,16 @@ namespace FileTransfer_MexJet_360
                 Console.WriteLine("*                                                                             *");
                 Console.WriteLine("*                                                                             *");
                 Console.WriteLine("* Prevalidando registros anteriormente en error ...                           *");
-                Program.oDBFli.CargarPreValidacionBitacoras();
+                //Program.oDBFli.CargarPreValidacionBitacoras();
                 Console.WriteLine("*                                                                             *");
                 Console.WriteLine("*                                                                             *");
                 Console.WriteLine("*                                                                             *");
                 Console.WriteLine("* Realizando respaldo de la base de datos ...                                 *");
 
-                if (Program.oDBFli.RespaldarBaseDatos())
-                    Console.WriteLine("*Se realizo una copia exitosa                                                 *");
-                else
-                    Console.WriteLine("*Ocurrio un error al crear la copia                                           *");
+                //if (Program.oDBFli.RespaldarBaseDatos())
+                //    Console.WriteLine("*Se realizo una copia exitosa                                                 *");
+                //else
+                //    Console.WriteLine("*Ocurrio un error al crear la copia                                           *");
 
                 Console.WriteLine("*                                                                             *");
                 Console.WriteLine("*                                                                             *");
@@ -176,36 +177,17 @@ namespace FileTransfer_MexJet_360
                 Console.WriteLine("*******************************************************************************");
                 Console.WriteLine("*             !!!!   Proceso Finalizado Exitosamente   !!!!                   *");
                 Console.WriteLine("*******************************************************************************");
-                Program.GuardarBitacora("!!!!   Proceso Finalizado Exitosamente   !!!!");
+                Utils.GuardarBitacora("!!!!   Proceso Finalizado Exitosamente   !!!!");
                 Console.ReadKey();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                Program.GuardarBitacora("Ocurrio un error: " + ex.Message);
+                Utils.GuardarBitacora("Ocurrio un error: " + ex.Message);
                 Console.ReadKey();
             }
         }
 
-    public static void GuardarBitacora(string sMensaje)
-    {
-      try
-      {
-        string path1 = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\BitacorasApp\\";
-        string str = "Bitacora_" + DateTime.Now.ToString("yyyy_MM_dd") + ".txt";
-        if (!Directory.Exists(path1))
-          Directory.CreateDirectory(path1);
-        string path2 = path1 + str;
-        if (!File.Exists(path2))
-          File.CreateText(path2).Close();
-        StreamWriter streamWriter = File.AppendText(path2);
-        streamWriter.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " - " + sMensaje);
-        streamWriter.Close();
-      }
-      catch (Exception ex)
-      {
-        Console.WriteLine(ex.Message);
-      }
-    }
+    
   }
 }

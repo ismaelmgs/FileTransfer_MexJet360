@@ -474,7 +474,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         parameter.ParameterName = "Accion";
         parametros.Add(parameter);
         DBBase.ejecutaNonQuery("[FileTransfer].[spS_MXJ_TMP_PreValidaTransferenciaBitacora]", parametros);
-      }
+       }
       catch (Exception ex)
       {
         throw ex;
