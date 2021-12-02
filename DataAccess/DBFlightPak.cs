@@ -9,6 +9,7 @@ using System;
 using System.Configuration;
 using System.Data;
 using System.Data.OleDb;
+using System.Data.SqlClient;
 using System.IO;
 
 namespace FileTransfer_MexJet_360.DataAccess
@@ -16,17 +17,21 @@ namespace FileTransfer_MexJet_360.DataAccess
     public class DBFlightPak : DBBase
     {
         private DBALEMexJet oDBALE = new DBALEMexJet();
-        private OleDbConnection oConnection = new OleDbConnection();
-        public static string CadenaOleDbConnection;
+        //private OleDbConnection oConnection = new OleDbConnection();
+        //public static string CadenaOleDbConnection;
+        public SqlConnection oscConnection = new SqlConnection();
 
         public bool TestConnection()
         {
             try
             {
-                DBFlightPak.CadenaOleDbConnection = "Provider = VFPOLEDB.1;Data Source= " + ConfigurationManager.AppSettings["BASEDATOS"].ToString();
-                this.oConnection.ConnectionString = DBFlightPak.CadenaOleDbConnection;
-                this.oConnection.Open();
+                this.oscConnection.ConnectionString = new DBBaseFPK().oBD_SP.sConexionSQL;
+                this.oscConnection.Open();
                 return true;
+                //DBFlightPak.CadenaOleDbConnection = "Provider = VFPOLEDB.1;Data Source= " + ConfigurationManager.AppSettings["BASEDATOS"].ToString();
+                //this.oConnection.ConnectionString = DBFlightPak.CadenaOleDbConnection;
+                //this.oConnection.Open();
+                //return true;
             }
             catch (Exception ex)
             {
@@ -34,23 +39,23 @@ namespace FileTransfer_MexJet_360.DataAccess
             }
         }
 
-        public bool RespaldarBaseDatos()
-    {
-      try
-      {
-        string path = ConfigurationManager.AppSettings["NuevaRutaBDF"].ToString();
-        FileInfo[] files = new DirectoryInfo(ConfigurationManager.AppSettings["RutaBDF"].ToString()).GetFiles();
-        if (!Directory.Exists(path))
-          Directory.CreateDirectory(path);
-        foreach (FileInfo fileInfo in files)
-          fileInfo.CopyTo(path + "/" + fileInfo.Name, true);
-        return true;
-      }
-      catch (Exception ex)
-      {
-        throw ex;
-      }
-    }
+    //public bool RespaldarBaseDatos()
+    //{
+    //  try
+    //  {
+    //    string path = ConfigurationManager.AppSettings["NuevaRutaBDF"].ToString();
+    //    FileInfo[] files = new DirectoryInfo(ConfigurationManager.AppSettings["RutaBDF"].ToString()).GetFiles();
+    //    if (!Directory.Exists(path))
+    //      Directory.CreateDirectory(path);
+    //    foreach (FileInfo fileInfo in files)
+    //      fileInfo.CopyTo(path + "/" + fileInfo.Name, true);
+    //    return true;
+    //  }
+    //  catch (Exception ex)
+    //  {
+    //    throw ex;
+    //  }
+    //}
 
     public void CargarPreValidacionBitacoras()
     {
@@ -68,9 +73,12 @@ namespace FileTransfer_MexJet_360.DataAccess
     {
       try
       {
+        Utils.GuardarBitacora("Obtiene listado de Airopuertos");
         DataSet dataSet = new DataSet();
-        DataSet registrosAirport = this.getRegistrosAirport();
+        DataSet registrosAirport = this.getRegistrosAirport();        
         Console.WriteLine(string.Format("Se cargaran un total de {0} registros.", (object) registrosAirport.Tables[0].Rows.Count));
+        Utils.GuardarBitacora(string.Format("Se cargaran un total de {0} registros.", (object)registrosAirport.Tables[0].Rows.Count));
+
         this.oDBALE.CopiarRegistrosAeropuertos(registrosAirport);
       }
       catch (Exception ex)
@@ -157,12 +165,12 @@ namespace FileTransfer_MexJet_360.DataAccess
         string cmdText;
         if (string.IsNullOrEmpty(DBALEMexJet.sFechaLastUpdt_Aeropuertos))
         {
-          cmdText = " SELECT iata,icao_id,nvl(AIRPORT_NM,''),city,State,CtryDesc,Country,inactive,lastUser,lastupdt FROM Airport WHERE inactive<>'I' order by lastupdt desc";
+          cmdText = " SELECT iata,icao_id,nvl(AIRPORT_NM,''''),city,State,CtryDesc,Country,inactive,lastUser,lastupdt FROM Airport WHERE inactive<>''I'' order by lastupdt desc";
         }
         else
         {
           string[] strArray1 = new string[13];
-          strArray1[0] = " Select iata,icao_id,nvl(AIRPORT_NM,''),city,State,CtryDesc,Country,inactive,lastUser,lastupdt FROM Airport  WHERE inactive<>'I' AND LASTUPDT > DATETIME(";
+          strArray1[0] = " Select iata,icao_id,nvl(AIRPORT_NM,''''),city,State,CtryDesc,Country,inactive,lastUser,lastupdt FROM Airport  WHERE inactive<>''I'' AND LASTUPDT > DATETIME(";
           string[] strArray2 = strArray1;
           DateTime dateTime = Convert.ToDateTime(DBALEMexJet.sFechaLastUpdt_Aeropuertos);
           int num = dateTime.Year;
@@ -222,12 +230,12 @@ namespace FileTransfer_MexJet_360.DataAccess
         string cmdText;
         if (string.IsNullOrEmpty(DBALEMexJet.sFechaLastUpdt_Pilotos))
         {
-          cmdText = " SELECT CREWCODE, LAST_NAME, FIRST_NAME, nvl(middleinit,'') ,LASTUSER, LASTUPDT from Crew  order by lastupdt desc";
+          cmdText = " SELECT CREWCODE, LAST_NAME, FIRST_NAME, nvl(middleinit,'''') ,LASTUSER, LASTUPDT from Crew  order by lastupdt desc";
         }
         else
         {
           string[] strArray1 = new string[13];
-          strArray1[0] = " SELECT CREWCODE, LAST_NAME, FIRST_NAME, nvl(middleinit,'') ,LASTUSER, LASTUPDT from Crew  WHERE LASTUPDT > DATETIME(";
+          strArray1[0] = " SELECT CREWCODE, LAST_NAME, FIRST_NAME, nvl(middleinit,'''') ,LASTUSER, LASTUPDT from Crew  WHERE LASTUPDT > DATETIME(";
           string[] strArray2 = strArray1;
           DateTime dateTime = Convert.ToDateTime(DBALEMexJet.sFechaLastUpdt_Pilotos);
           int num = dateTime.Year;
@@ -266,8 +274,15 @@ namespace FileTransfer_MexJet_360.DataAccess
           strArray1[12] = ")ORDER BY LASTUPDT DESC";
           cmdText = string.Concat(strArray1);
         }
-        new OleDbDataAdapter(new OleDbCommand(cmdText, this.oConnection)).Fill(dataSet);
+
+        string sQuery = "SELECT * FROM OPENQUERY(" + MyGlobals.LinkedServer + ", '" + cmdText + "')";               
+
+        dataSet = new DBBaseFPK().oBD_SP.EjecutarDS_DeQuery(sQuery);
+
         return dataSet;
+        //new OleDbDataAdapter(new OleDbCommand(cmdText, this.oConnection)).Fill(dataSet);
+
+
       }
       catch (Exception ex)
       {
@@ -327,8 +342,11 @@ namespace FileTransfer_MexJet_360.DataAccess
           strArray1[12] = ")ORDER BY LASTUPDT DESC";
           cmdText = string.Concat(strArray1);
         }
-        new OleDbDataAdapter(new OleDbCommand(cmdText, this.oConnection)).Fill(dataSet);
-        return dataSet;
+
+         string sQuery = "SELECT * FROM OPENQUERY(" + MyGlobals.LinkedServer + ", '" + cmdText + "')";
+         dataSet = new DBBaseFPK().oBD_SP.EjecutarDS_DeQuery(sQuery);
+         return dataSet;
+         //new OleDbDataAdapter(new OleDbCommand(cmdText, this.oConnection)).Fill(dataSet);
       }
       catch (Exception ex)
       {
@@ -388,8 +406,10 @@ namespace FileTransfer_MexJet_360.DataAccess
           strArray1[12] = ")ORDER BY LASTUPDT DESC";
           cmdText = string.Concat(strArray1);
         }
-        new OleDbDataAdapter(new OleDbCommand(cmdText, this.oConnection)).Fill(dataSet);
-        return dataSet;
+                string sQuery = "SELECT * FROM OPENQUERY(" + MyGlobals.LinkedServer + ", '" + cmdText + "')";
+                dataSet = new DBBaseFPK().oBD_SP.EjecutarDS_DeQuery(sQuery);
+                return dataSet;
+                //new OleDbDataAdapter(new OleDbCommand(cmdText, this.oConnection)).Fill(dataSet);
       }
       catch (Exception ex)
       {
@@ -450,10 +470,11 @@ namespace FileTransfer_MexJet_360.DataAccess
                 cmdText = string.Concat(strArray1);
             }
 
-            string sQuery = "SELECT * FROM OPENQUERY(" +  + ", 'cmdText')";
+                string sQuery = "SELECT * FROM OPENQUERY(" + MyGlobals.LinkedServer + ", '" + cmdText + "')";
+                dataSet = new DBBaseFPK().oBD_SP.EjecutarDS_DeQuery(sQuery);
+                return dataSet;
 
-            new OleDbDataAdapter(new OleDbCommand(cmdText, this.oConnection)).Fill(dataSet);
-            return dataSet;
+                //new OleDbDataAdapter(new OleDbCommand(cmdText, this.oConnection)).Fill(dataSet);
         }
         catch (Exception ex)
         {
@@ -577,10 +598,17 @@ namespace FileTransfer_MexJet_360.DataAccess
           strArray15[12] = ")ORDER BY LASTUPDT DESC";
           cmdText3 = string.Concat(strArray15);
         }
-        new OleDbDataAdapter(new OleDbCommand(cmdText1, this.oConnection)).Fill(dataSet, "POMAIN");
-        new OleDbDataAdapter(new OleDbCommand(cmdText2, this.oConnection)).Fill(dataSet, "POCREW");
-        new OleDbDataAdapter(new OleDbCommand(cmdText3, this.oConnection)).Fill(dataSet, "POLEGS");
-        return dataSet;
+
+         string sQuery = "SELECT * FROM OPENQUERY(" + MyGlobals.LinkedServer + ", '" + cmdText1 + "')";
+         //string sQuery = "SELECT * FROM OPENQUERY(" + MyGlobals.LinkedServer + ", '" + cmdText2 + "')";
+         //string sQuery = "SELECT * FROM OPENQUERY(" + MyGlobals.LinkedServer + ", '" + cmdText3 + "')";
+         dataSet = new DBBaseFPK().oBD_SP.EjecutarDS_DeQuery(sQuery);
+         return dataSet;
+
+        //new OleDbDataAdapter(new OleDbCommand(cmdText1, this.oConnection)).Fill(dataSet, "POMAIN");
+        //new OleDbDataAdapter(new OleDbCommand(cmdText2, this.oConnection)).Fill(dataSet, "POCREW");
+        //new OleDbDataAdapter(new OleDbCommand(cmdText3, this.oConnection)).Fill(dataSet, "POLEGS");
+        //return dataSet;
       }
       catch (Exception ex)
       {

@@ -29,7 +29,7 @@ namespace FileTransfer_MexJet_360
                 Console.WriteLine("*                                                                             *");
                 Console.WriteLine("*                                                                             *");
                 Console.WriteLine("* Prevalidando registros anteriormente en error ...                           *");
-                //Program.oDBFli.CargarPreValidacionBitacoras();
+                Program.oDBFli.CargarPreValidacionBitacoras();
                 Console.WriteLine("*                                                                             *");
                 Console.WriteLine("*                                                                             *");
                 Console.WriteLine("*                                                                             *");
