@@ -136,28 +136,28 @@ namespace FileTransfer_MexJet_360.DataAccess
 
     public void CopiarRegistrosAeropuertos(DataSet ds)
     {
-      try
-      {
-        this.oscConnection.ConnectionString = this.oBD_SP.sConexionSQL;
-        SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(this.oscConnection);
-        sqlBulkCopy.DestinationTableName = "[FileTransfer].[tmp_MXJ_Auxiliar_Aeropuertos]";
-        this.oscConnection.Open();
-        sqlBulkCopy.WriteToServer(ds.Tables[0]);
-        this.oscConnection.Close();
-        if (string.IsNullOrEmpty(DBALEMexJet.sFechaLastUpdt_Aeropuertos))
-          DBALEMexJet.sFechaLastUpdt_Aeropuertos = "01/01/1800";
-        DataSet dataSet1 = new DataSet();
-        DataSet dataSet2 = this.oBD_SP.EjecutarDS("[FileTransfer].[spS_MXJ_TMP_FileTransfer]", (object) "@Accion", (object) 1, (object) "@FechaLastUpdtAeropuerto", (object) Convert.ToDateTime(DBALEMexJet.sFechaLastUpdt_Aeropuertos));
-        sqlBulkCopy.DestinationTableName = "[Catalogos].[tbc_MXJ_Aeropuerto]";
-        this.oscConnection.Open();
-        sqlBulkCopy.WriteToServer(dataSet2.Tables[0]);
-        this.oscConnection.Close();
-        this.oBD_SP.EjecutarDS("[FileTransfer].[spD_MXJ_EliminaAeropuertosRepetidos]");
-      }
-      catch (Exception ex)
-      {
-        throw ex;
-      }
+        try
+        {
+            this.oscConnection.ConnectionString = this.oBD_SP.sConexionSQL;
+            SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(this.oscConnection);
+            sqlBulkCopy.DestinationTableName = "[FileTransfer].[tmp_MXJ_Auxiliar_Aeropuertos]";
+            this.oscConnection.Open();
+            sqlBulkCopy.WriteToServer(ds.Tables[0]);
+            this.oscConnection.Close();
+            if (string.IsNullOrEmpty(DBALEMexJet.sFechaLastUpdt_Aeropuertos))
+                DBALEMexJet.sFechaLastUpdt_Aeropuertos = "01/01/1800";
+            DataSet dataSet1 = new DataSet();
+            DataSet dataSet2 = this.oBD_SP.EjecutarDS("[FileTransfer].[spS_MXJ_TMP_FileTransfer]", (object) "@Accion", (object) 1, (object) "@FechaLastUpdtAeropuerto", (object) Convert.ToDateTime(DBALEMexJet.sFechaLastUpdt_Aeropuertos));
+            sqlBulkCopy.DestinationTableName = "[Catalogos].[tbc_MXJ_Aeropuerto]";
+            this.oscConnection.Open();
+            sqlBulkCopy.WriteToServer(dataSet2.Tables[0]);
+            this.oscConnection.Close();
+            this.oBD_SP.EjecutarDS("[FileTransfer].[spD_MXJ_EliminaAeropuertosRepetidos]");
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
     }
 
     public void CopiarRegistrosPilotos(DataSet ds)

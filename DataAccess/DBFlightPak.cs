@@ -482,138 +482,145 @@ namespace FileTransfer_MexJet_360.DataAccess
         }
     }
 
-    public DataSet getRegistrosBitacoras()
-    {
-      DataSet dataSet = new DataSet();
-      try
-      {
-        string cmdText1;
-        string cmdText2;
-        string cmdText3;
-        if (string.IsNullOrEmpty(DBALEMexJet.sUltimaCargaBitacorasPOMAIN))
+        public DataSet getRegistrosBitacoras()
         {
-          cmdText1 = " SELECT TAIL_NMBR,LOGNUM,ORIG_NMBR,TECHLOG, COMPLETED ,LASTUSER,LASTUPDT FROM pomain";
-          cmdText2 = " SELECT LOGNUM, CREWCODE, DUTYTYPE, LEGID, LASTUSER, LASTUPDT FROM pocrew";
-          cmdText3 = " SELECT TECHLOG, DEPICAO_ID, ARRICAO_ID, CLIENT, SCHEDTTM, TIMEOFF, BLKOUT, FUEL_OUT, PAX_TOTAL, CAT_CODE, TIMEON, BLKIN, FUEL_IN, LEG_NUM, LEGID, LASTUPDT, LOGNUM, INDTTM, OUTDTTM   FROM POLEGS";
-        }
-        else
-        {
-          string[] strArray1 = new string[13];
-          strArray1[0] = " SELECT TAIL_NMBR,LOGNUM,ORIG_NMBR,TECHLOG, COMPLETED ,LASTUSER,LASTUPDT FROM pomain WHERE LASTUPDT > DATETIME(";
-          string[] strArray2 = strArray1;
-          DateTime dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOMAIN);
-          string str1 = dateTime.Year.ToString();
-          strArray2[1] = str1;
-          strArray1[2] = ", ";
-          string[] strArray3 = strArray1;
-          dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOMAIN);
-          string str2 = dateTime.Month.ToString();
-          strArray3[3] = str2;
-          strArray1[4] = ", ";
-          string[] strArray4 = strArray1;
-          dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOMAIN);
-          string str3 = dateTime.Day.ToString();
-          strArray4[5] = str3;
-          strArray1[6] = ", ";
-          string[] strArray5 = strArray1;
-          dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOMAIN);
-          string str4 = dateTime.Hour.ToString();
-          strArray5[7] = str4;
-          strArray1[8] = ", ";
-          string[] strArray6 = strArray1;
-          dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOMAIN);
-          string str5 = dateTime.Minute.ToString();
-          strArray6[9] = str5;
-          strArray1[10] = ", ";
-          string[] strArray7 = strArray1;
-          dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOMAIN);
-          string str6 = dateTime.Second.ToString();
-          strArray7[11] = str6;
-          strArray1[12] = ")ORDER BY LASTUPDT DESC";
-          cmdText1 = string.Concat(strArray1);
-          string[] strArray8 = new string[13];
-          strArray8[0] = " SELECT LOGNUM, CREWCODE, DUTYTYPE, LEGID, LASTUSER, LASTUPDT FROM pocrew WHERE LASTUPDT > DATETIME(";
-          string[] strArray9 = strArray8;
-          dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOCREW);
-          string str7 = dateTime.Year.ToString();
-          strArray9[1] = str7;
-          strArray8[2] = ", ";
-          string[] strArray10 = strArray8;
-          dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOCREW);
-          string str8 = dateTime.Month.ToString();
-          strArray10[3] = str8;
-          strArray8[4] = ", ";
-          string[] strArray11 = strArray8;
-          dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOCREW);
-          string str9 = dateTime.Day.ToString();
-          strArray11[5] = str9;
-          strArray8[6] = ", ";
-          string[] strArray12 = strArray8;
-          dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOCREW);
-          string str10 = dateTime.Hour.ToString();
-          strArray12[7] = str10;
-          strArray8[8] = ", ";
-          string[] strArray13 = strArray8;
-          dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOCREW);
-          string str11 = dateTime.Minute.ToString();
-          strArray13[9] = str11;
-          strArray8[10] = ", ";
-          string[] strArray14 = strArray8;
-          dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOCREW);
-          string str12 = dateTime.Second.ToString();
-          strArray14[11] = str12;
-          strArray8[12] = ")ORDER BY LASTUPDT DESC";
-          cmdText2 = string.Concat(strArray8);
-          string[] strArray15 = new string[13];
-          strArray15[0] = " SELECT TECHLOG, DEPICAO_ID, ARRICAO_ID, CLIENT, SCHEDTTM, TIMEOFF, BLKOUT, FUEL_OUT, PAX_TOTAL, CAT_CODE, TIMEON, BLKIN, FUEL_IN, LEG_NUM, LEGID, LASTUPDT, LOGNUM, INDTTM, OUTDTTM FROM POLEGS WHERE LASTUPDT > DATETIME(";
-          string[] strArray16 = strArray15;
-          dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOLEGS);
-          string str13 = dateTime.Year.ToString();
-          strArray16[1] = str13;
-          strArray15[2] = ", ";
-          string[] strArray17 = strArray15;
-          dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOLEGS);
-          string str14 = dateTime.Month.ToString();
-          strArray17[3] = str14;
-          strArray15[4] = ", ";
-          string[] strArray18 = strArray15;
-          dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOLEGS);
-          string str15 = dateTime.Day.ToString();
-          strArray18[5] = str15;
-          strArray15[6] = ", ";
-          string[] strArray19 = strArray15;
-          dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOLEGS);
-          string str16 = dateTime.Hour.ToString();
-          strArray19[7] = str16;
-          strArray15[8] = ", ";
-          string[] strArray20 = strArray15;
-          dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOLEGS);
-          string str17 = dateTime.Minute.ToString();
-          strArray20[9] = str17;
-          strArray15[10] = ", ";
-          string[] strArray21 = strArray15;
-          dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOLEGS);
-          string str18 = dateTime.Second.ToString();
-          strArray21[11] = str18;
-          strArray15[12] = ")ORDER BY LASTUPDT DESC";
-          cmdText3 = string.Concat(strArray15);
-        }
+            DataSet dataSet = new DataSet();
+            try
+            {
+            string cmdText1;
+            string cmdText2;
+            string cmdText3;
+            if (string.IsNullOrEmpty(DBALEMexJet.sUltimaCargaBitacorasPOMAIN))
+            {
+                cmdText1 = " SELECT TAIL_NMBR,LOGNUM,ORIG_NMBR,TECHLOG, COMPLETED ,LASTUSER,LASTUPDT FROM pomain";
+                cmdText2 = " SELECT LOGNUM, CREWCODE, DUTYTYPE, LEGID, LASTUSER, LASTUPDT FROM pocrew";
+                cmdText3 = " SELECT TECHLOG, DEPICAO_ID, ARRICAO_ID, CLIENT, SCHEDTTM, TIMEOFF, BLKOUT, FUEL_OUT, PAX_TOTAL, CAT_CODE, TIMEON, BLKIN, FUEL_IN, LEG_NUM, LEGID, LASTUPDT, LOGNUM, INDTTM, OUTDTTM   FROM POLEGS";
+            }
+            else
+            {
+                string[] strArray1 = new string[13];
+                strArray1[0] = " SELECT TAIL_NMBR,LOGNUM,ORIG_NMBR,TECHLOG, COMPLETED ,LASTUSER,LASTUPDT FROM pomain WHERE LASTUPDT > DATETIME(";
+                string[] strArray2 = strArray1;
+                DateTime dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOMAIN);
+                string str1 = dateTime.Year.ToString();
+                strArray2[1] = str1;
+                strArray1[2] = ", ";
+                string[] strArray3 = strArray1;
+                dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOMAIN);
+                string str2 = dateTime.Month.ToString();
+                strArray3[3] = str2;
+                strArray1[4] = ", ";
+                string[] strArray4 = strArray1;
+                dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOMAIN);
+                string str3 = dateTime.Day.ToString();
+                strArray4[5] = str3;
+                strArray1[6] = ", ";
+                string[] strArray5 = strArray1;
+                dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOMAIN);
+                string str4 = dateTime.Hour.ToString();
+                strArray5[7] = str4;
+                strArray1[8] = ", ";
+                string[] strArray6 = strArray1;
+                dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOMAIN);
+                string str5 = dateTime.Minute.ToString();
+                strArray6[9] = str5;
+                strArray1[10] = ", ";
+                string[] strArray7 = strArray1;
+                dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOMAIN);
+                string str6 = dateTime.Second.ToString();
+                strArray7[11] = str6;
+                strArray1[12] = ")ORDER BY LASTUPDT DESC";
+                cmdText1 = string.Concat(strArray1);
+                string[] strArray8 = new string[13];
+                strArray8[0] = " SELECT LOGNUM, CREWCODE, DUTYTYPE, LEGID, LASTUSER, LASTUPDT FROM pocrew WHERE LASTUPDT > DATETIME(";
+                string[] strArray9 = strArray8;
+                dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOCREW);
+                string str7 = dateTime.Year.ToString();
+                strArray9[1] = str7;
+                strArray8[2] = ", ";
+                string[] strArray10 = strArray8;
+                dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOCREW);
+                string str8 = dateTime.Month.ToString();
+                strArray10[3] = str8;
+                strArray8[4] = ", ";
+                string[] strArray11 = strArray8;
+                dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOCREW);
+                string str9 = dateTime.Day.ToString();
+                strArray11[5] = str9;
+                strArray8[6] = ", ";
+                string[] strArray12 = strArray8;
+                dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOCREW);
+                string str10 = dateTime.Hour.ToString();
+                strArray12[7] = str10;
+                strArray8[8] = ", ";
+                string[] strArray13 = strArray8;
+                dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOCREW);
+                string str11 = dateTime.Minute.ToString();
+                strArray13[9] = str11;
+                strArray8[10] = ", ";
+                string[] strArray14 = strArray8;
+                dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOCREW);
+                string str12 = dateTime.Second.ToString();
+                strArray14[11] = str12;
+                strArray8[12] = ")ORDER BY LASTUPDT DESC";
+                cmdText2 = string.Concat(strArray8);
+                string[] strArray15 = new string[13];
+                strArray15[0] = " SELECT TECHLOG, DEPICAO_ID, ARRICAO_ID, CLIENT, SCHEDTTM, TIMEOFF, BLKOUT, FUEL_OUT, PAX_TOTAL, CAT_CODE, TIMEON, BLKIN, FUEL_IN, LEG_NUM, LEGID, LASTUPDT, LOGNUM, INDTTM, OUTDTTM FROM POLEGS WHERE LASTUPDT > DATETIME(";
+                string[] strArray16 = strArray15;
+                dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOLEGS);
+                string str13 = dateTime.Year.ToString();
+                strArray16[1] = str13;
+                strArray15[2] = ", ";
+                string[] strArray17 = strArray15;
+                dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOLEGS);
+                string str14 = dateTime.Month.ToString();
+                strArray17[3] = str14;
+                strArray15[4] = ", ";
+                string[] strArray18 = strArray15;
+                dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOLEGS);
+                string str15 = dateTime.Day.ToString();
+                strArray18[5] = str15;
+                strArray15[6] = ", ";
+                string[] strArray19 = strArray15;
+                dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOLEGS);
+                string str16 = dateTime.Hour.ToString();
+                strArray19[7] = str16;
+                strArray15[8] = ", ";
+                string[] strArray20 = strArray15;
+                dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOLEGS);
+                string str17 = dateTime.Minute.ToString();
+                strArray20[9] = str17;
+                strArray15[10] = ", ";
+                string[] strArray21 = strArray15;
+                dateTime = Convert.ToDateTime(DBALEMexJet.sUltimaCargaBitacorasPOLEGS);
+                string str18 = dateTime.Second.ToString();
+                strArray21[11] = str18;
+                strArray15[12] = ")ORDER BY LASTUPDT DESC";
+                cmdText3 = string.Concat(strArray15);
+            }
 
-         string sQuery = "SELECT * FROM OPENQUERY(" + MyGlobals.LinkedServer + ", '" + cmdText1 + "')";
-         //string sQuery = "SELECT * FROM OPENQUERY(" + MyGlobals.LinkedServer + ", '" + cmdText2 + "')";
-         //string sQuery = "SELECT * FROM OPENQUERY(" + MyGlobals.LinkedServer + ", '" + cmdText3 + "')";
-         dataSet = new DBBaseFPK().oBD_SP.EjecutarDS_DeQuery(sQuery);
-         return dataSet;
+                string sQueryMain = "SELECT * FROM OPENQUERY(" + MyGlobals.LinkedServer + ", '" + cmdText1 + "')";
+                string sQueryCrew = "SELECT * FROM OPENQUERY(" + MyGlobals.LinkedServer + ", '" + cmdText2 + "')";
+                string sQueryLegs = "SELECT * FROM OPENQUERY(" + MyGlobals.LinkedServer + ", '" + cmdText3 + "')";
 
-        //new OleDbDataAdapter(new OleDbCommand(cmdText1, this.oConnection)).Fill(dataSet, "POMAIN");
-        //new OleDbDataAdapter(new OleDbCommand(cmdText2, this.oConnection)).Fill(dataSet, "POCREW");
-        //new OleDbDataAdapter(new OleDbCommand(cmdText3, this.oConnection)).Fill(dataSet, "POLEGS");
-        //return dataSet;
-      }
-      catch (Exception ex)
-      {
-        throw ex;
-      }
+                DataTable dtMain = new DBBaseFPK().oBD_SP.EjecutarDT_DeQuery(sQueryMain);
+                DataTable dtCrew = new DBBaseFPK().oBD_SP.EjecutarDT_DeQuery(sQueryCrew);
+                DataTable dtLegs = new DBBaseFPK().oBD_SP.EjecutarDT_DeQuery(sQueryLegs);
+
+                dataSet.Tables.Add(dtMain);
+                dataSet.Tables.Add(dtCrew);
+                dataSet.Tables.Add(dtLegs);
+
+                dataSet.Tables[0].TableName = "POMAIN";
+                dataSet.Tables[1].TableName = "POCREW";
+                dataSet.Tables[2].TableName = "POLEGS";
+
+                return dataSet;
+            }
+            catch (Exception ex)
+            {
+            throw ex;
+            }
+        }
     }
-  }
 }
