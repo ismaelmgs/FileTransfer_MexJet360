@@ -15,32 +15,32 @@ using NucleoBase.Core;
 
 namespace FileTransfer_MexJet_360.DataAccess
 {
-  public class DBALEMexJet : DBBase
-  {
-    public string sFechaLAstEjecucion = "";
-    public static string sFechaLastUpdt_Aeropuertos = "";
-    public static string sFechaLastUpdt_Pilotos = "";
-    public static string sUltimaCargaTripCrew = "";
-    public static string sUltimaCargaTripMain = "";
-    public static string sUltimaCargaBitacorasPOMAIN = "";
-    public static string sUltimaCargaBitacorasPOCREW = "";
-    public static string sUltimaCargaBitacorasPOLEGS = "";
-    public static string sUltimaCargaTripLegs = "";
-    public SqlConnection oscConnection = new SqlConnection();
-
-    public bool TestConnection()
+    public class DBALEMexJet : DBBase
     {
-      try
-      {
-        this.oscConnection.ConnectionString = new DBBase(1).oBD_SP.sConexionSQL;
-        this.oscConnection.Open();
-        return true;
-      }
-      catch (SqlException ex)
-      {
-        throw ex;
-      }
-    }
+        public string sFechaLAstEjecucion = "";
+        public static string sFechaLastUpdt_Aeropuertos = "";
+        public static string sFechaLastUpdt_Pilotos = "";
+        public static string sUltimaCargaTripCrew = "";
+        public static string sUltimaCargaTripMain = "";
+        public static string sUltimaCargaBitacorasPOMAIN = "";
+        public static string sUltimaCargaBitacorasPOCREW = "";
+        public static string sUltimaCargaBitacorasPOLEGS = "";
+        public static string sUltimaCargaTripLegs = "";
+        public SqlConnection oscConnection = new SqlConnection();
+
+        public bool TestConnection()
+        {
+            try
+            {
+                this.oscConnection.ConnectionString = new DBBase(1).oBD_SP.sConexionSQL;
+                this.oscConnection.Open();
+                return true;
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+        }
 
     public bool VerificarUltimoEnvioAeropuertos()
     {
@@ -160,30 +160,32 @@ namespace FileTransfer_MexJet_360.DataAccess
         }
     }
 
-    public void CopiarRegistrosPilotos(DataSet ds)
-    {
-      try
-      {
-        this.oscConnection.ConnectionString = this.oBD_SP.sConexionSQL;
-        SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(this.oscConnection);
-        sqlBulkCopy.DestinationTableName = "[FileTransfer].[tmp_MXJ_Auxiliar_Pilotos]";
-        this.oscConnection.Open();
-        sqlBulkCopy.WriteToServer(ds.Tables[0]);
-        this.oscConnection.Close();
-        if (string.IsNullOrEmpty(DBALEMexJet.sFechaLastUpdt_Pilotos))
-          DBALEMexJet.sFechaLastUpdt_Pilotos = "01/01/1900";
-        DataSet dataSet1 = new DataSet();
-        DataSet dataSet2 = this.oBD_SP.EjecutarDS("[FileTransfer].[spS_MXJ_TMP_FileTransfer]", (object) "@Accion", (object) 2, (object) "@FechaLastUpdtPilotos", (object) Convert.ToDateTime(DBALEMexJet.sFechaLastUpdt_Pilotos));
-        sqlBulkCopy.DestinationTableName = "[Catalogos].[tbc_MXJ_Pilotos]";
-        this.oscConnection.Open();
-        sqlBulkCopy.WriteToServer(dataSet2.Tables[0]);
-        this.oscConnection.Close();
-      }
-      catch (Exception ex)
-      {
-        throw ex;
-      }
-    }
+        public void CopiarRegistrosPilotos(DataSet ds)
+        {
+            try
+            {
+                this.oscConnection.ConnectionString = this.oBD_SP.sConexionSQL;
+                SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(this.oscConnection);
+                sqlBulkCopy.DestinationTableName = "[FileTransfer].[tmp_MXJ_Auxiliar_Pilotos]";
+                this.oscConnection.Open();
+                sqlBulkCopy.WriteToServer(ds.Tables[0]);
+                this.oscConnection.Close();
+
+                    if (string.IsNullOrEmpty(DBALEMexJet.sFechaLastUpdt_Pilotos))
+                    DBALEMexJet.sFechaLastUpdt_Pilotos = "01/01/1900";
+
+                DataSet dataSet1 = new DataSet();
+                DataSet dataSet2 = this.oBD_SP.EjecutarDS("[FileTransfer].[spS_MXJ_TMP_FileTransfer]", (object) "@Accion", (object) 2, (object) "@FechaLastUpdtPilotos", (object) Convert.ToDateTime(DBALEMexJet.sFechaLastUpdt_Pilotos));
+                sqlBulkCopy.DestinationTableName = "[Catalogos].[tbc_MXJ_Pilotos]";
+                this.oscConnection.Open();
+                sqlBulkCopy.WriteToServer(dataSet2.Tables[0]);
+                this.oscConnection.Close();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
     public void CopiarRegistrosTripCrew(DataSet ds)
     {
