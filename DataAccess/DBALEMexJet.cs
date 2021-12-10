@@ -11,6 +11,7 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using FileTransfer_MexJet_360.Clases;
 using NucleoBase.Core;
 
 namespace FileTransfer_MexJet_360.DataAccess
@@ -32,6 +33,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         {
             try
             {
+                MyGlobals.StepLog = "TestConnection de DBALEMexJet";
                 this.oscConnection.ConnectionString = new DBBase(1).oBD_SP.sConexionSQL;
                 this.oscConnection.Open();
                 return true;
@@ -46,6 +48,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         {
             try
             {
+                MyGlobals.StepLog = "VerificarUltimoEnvioAeropuertos";
                 DBALEMexJet.sFechaLastUpdt_Aeropuertos = this.oBD_SP.EjecutarDS_DeQuery("SELECT MAX(CONVERT(DATETIME,LASTUPDT)) FROM [FileTransfer].[tmp_MXJ_Auxiliar_Aeropuertos] WITH(NOLOCK)").Tables[0].Rows[0][0].ToString();
                 return !string.IsNullOrEmpty(DBALEMexJet.sFechaLastUpdt_Aeropuertos);
             }
@@ -59,6 +62,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         {
             try
             {
+                MyGlobals.StepLog = "VerificarUltimoEnvioPilotos";
                 DBALEMexJet.sFechaLastUpdt_Pilotos = this.oBD_SP.EjecutarDS_DeQuery("SELECT MAX(CONVERT(DATETIME,FechaCreacion)) FROM [FileTransfer].[tmp_MXJ_Auxiliar_Pilotos] WITH(NOLOCK)").Tables[0].Rows[0][0].ToString();
                 return !string.IsNullOrEmpty(DBALEMexJet.sFechaLastUpdt_Pilotos);
             }
@@ -72,6 +76,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         {
             try
             {
+                MyGlobals.StepLog = "VerificarUltimoEnvioTripCrew";
                 DBALEMexJet.sUltimaCargaTripCrew = this.oBD_SP.EjecutarDS_DeQuery("SELECT MAX(CONVERT(DATETIME,FechaCreacion)) FROM FileTransfer.tmp_MXJ_Auxiliar_TripCrew WITH (NOLOCK)").Tables[0].Rows[0][0].ToString();
                 return !string.IsNullOrEmpty(DBALEMexJet.sUltimaCargaTripCrew);
             }
@@ -85,6 +90,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         {
             try
             {
+                MyGlobals.StepLog = "VerificarUltimoEnvioTripMain";
                 DBALEMexJet.sUltimaCargaTripMain = this.oBD_SP.EjecutarDS_DeQuery("SELECT MAX(CONVERT(DATETIME,FechaCreacion)) FROM [FileTransfer].[tmp_MXJ_Auxiliar_TripMain] WITH (NOLOCK)").Tables[0].Rows[0][0].ToString();
                 return !string.IsNullOrEmpty(DBALEMexJet.sUltimaCargaTripMain);
             }
@@ -98,6 +104,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         {
             try
             {
+                MyGlobals.StepLog = "VerificarUltimoEnvioBitacoras";
                 DBALEMexJet.sUltimaCargaBitacorasPOMAIN = this.oBD_SP.EjecutarDS_DeQuery("SELECT MAX(CONVERT(DATETIME,LASTUPDT)) FROM [FileTransfer].[tmp_MXJ_Auxiliar_Bitacoras_POMAIN] WITH(NOLOCK)").Tables[0].Rows[0][0].ToString();
                 DBALEMexJet.sUltimaCargaBitacorasPOCREW = this.oBD_SP.EjecutarDS_DeQuery("SELECT MAX(CONVERT(DATETIME,LASTUPDT)) FROM [FileTransfer].[tmp_MXJ_Auxiliar_Bitacoras_POCREW] WITH(NOLOCK)").Tables[0].Rows[0][0].ToString();
                 DBALEMexJet.sUltimaCargaBitacorasPOLEGS = this.oBD_SP.EjecutarDS_DeQuery("SELECT MAX(CONVERT(DATETIME,LASTUPDT)) FROM [FileTransfer].[tmp_MXJ_Auxiliar_Bitacoras_POLEGS] WITH(NOLOCK)").Tables[0].Rows[0][0].ToString();
@@ -113,6 +120,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         {
             try
             {
+                MyGlobals.StepLog = "VerificarUltimoEnvioTripLeg";
                 DBALEMexJet.sUltimaCargaTripLegs = this.oBD_SP.EjecutarDS_DeQuery("SELECT MAX(LASTUPDT) FROM [FileTransfer].[tmp_MXJ_Auxiliar_TripLegs] WITH(NOLOCK)").Tables[0].Rows[0][0].ToString();
                 return !string.IsNullOrEmpty(DBALEMexJet.sUltimaCargaTripLegs);
             }
@@ -126,6 +134,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         {
             try
             {
+                MyGlobals.StepLog = "EjecutaPreValidacionBitacoras";
                 this.ejecutarStoredPreValidacionTransferencia();
             }
             catch (Exception ex)
@@ -138,6 +147,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         {
             try
             {
+                MyGlobals.StepLog = "CopiarRegistrosAeropuertos";
                 this.oscConnection.ConnectionString = this.oBD_SP.sConexionSQL;
                 SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(this.oscConnection);
                 sqlBulkCopy.DestinationTableName = "[FileTransfer].[tmp_MXJ_Auxiliar_Aeropuertos]";
@@ -164,6 +174,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         {
             try
             {
+                MyGlobals.StepLog = "CopiarRegistrosPilotos";
                 this.oscConnection.ConnectionString = this.oBD_SP.sConexionSQL;
                 SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(this.oscConnection);
                 sqlBulkCopy.DestinationTableName = "[FileTransfer].[tmp_MXJ_Auxiliar_Pilotos]";
@@ -191,6 +202,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         {
             try
             {
+                MyGlobals.StepLog = "CopiarRegistrosTripCrew";
                 SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(this.oscConnection);
                 DataSet dataSet = new DataSet();
                 this.oscConnection.ConnectionString = this.oBD_SP.sConexionSQL;
@@ -211,6 +223,7 @@ namespace FileTransfer_MexJet_360.DataAccess
             SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(this.oscConnection);
             try
             {
+                MyGlobals.StepLog = "CopiarRegistrosTripLeg";
                 DataSet dataSet = new DataSet();
                 this.oscConnection.ConnectionString = this.oBD_SP.sConexionSQL;
                 sqlBulkCopy.DestinationTableName = "FileTransfer.tmp_MXJ_Auxiliar_TripLegs";
@@ -244,6 +257,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         {
             try
             {
+                MyGlobals.StepLog = "ejecutarStoredTransferenciaFightPack";
                 List<DbParameter> parametros = new List<DbParameter>();
                 DbParameter parameter1 = DBBase.dpf.CreateParameter();
                 parameter1.DbType = DbType.Int32;
@@ -303,6 +317,7 @@ namespace FileTransfer_MexJet_360.DataAccess
             this.oscConnection.ConnectionString = this.oBD_SP.sConexionSQL;
             try
             {
+                MyGlobals.StepLog = "CopiarRegistrosBitacora";
                 SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(this.oscConnection);
                 sqlBulkCopy.DestinationTableName = "[FileTransfer].[tmp_MXJ_Auxiliar_Bitacoras_POMAIN]";
                 this.oscConnection.Open();
@@ -340,6 +355,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         {
             try
             {
+                MyGlobals.StepLog = "ejecutarStoredTransferencia";
                 List<DbParameter> parametros = new List<DbParameter>();
                 DbParameter parameter1 = DBBase.dpf.CreateParameter();
                 parameter1.DbType = DbType.Int32;
@@ -383,6 +399,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         {
             try
             {
+                MyGlobals.StepLog = "ejecutarStoredTransferencia";
                 List<DbParameter> parametros = new List<DbParameter>();
                 DbParameter parameter1 = DBBase.dpf.CreateParameter();
                 parameter1.DbType = DbType.Int32;
@@ -426,6 +443,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         {
             try
             {
+                MyGlobals.StepLog = "ejecutarStoredTransferenciaValidacion";
                 List<DbParameter> parametros = new List<DbParameter>();
                 DbParameter parameter1 = DBBase.dpf.CreateParameter();
                 parameter1.DbType = DbType.Int32;
@@ -469,6 +487,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         {
             try
             {
+                MyGlobals.StepLog = "ejecutarStoredPreValidacionTransferencia";
                 List<DbParameter> parametros = new List<DbParameter>();
                 DbParameter parameter = DBBase.dpf.CreateParameter();
                 parameter.DbType = DbType.Int32;
@@ -488,6 +507,7 @@ namespace FileTransfer_MexJet_360.DataAccess
             SqlConnection connection = new SqlConnection();
             try
             {
+                MyGlobals.StepLog = "ejecutarStoredTransferencia2";
                 if (connection.State == ConnectionState.Open)
                     connection.Close();
                 connection.ConnectionString = this.oBD_SP.sConexionSQL;
@@ -521,6 +541,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         {
             try
             {
+                MyGlobals.StepLog = "CopiarRegistrosTripMain";
                 SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(this.oscConnection);
                 DataSet dataSet = new DataSet();
                 this.oscConnection.ConnectionString = this.oBD_SP.sConexionSQL;
@@ -544,6 +565,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         {
             try
             {
+                MyGlobals.StepLog = "ObtieneParametroPorClave";
                 return oBD_SP.EjecutarValor("", "", sClave).S();
             }
             catch (Exception ex)

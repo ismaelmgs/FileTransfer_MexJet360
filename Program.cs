@@ -29,7 +29,7 @@ namespace FileTransfer_MexJet_360
                 Console.WriteLine("*                                                                             *");
                 Console.WriteLine("*                                                                             *");
                 Console.WriteLine("* Prevalidando registros anteriormente en error ...                           *");
-                //Program.oDBFli.CargarPreValidacionBitacoras();
+                Program.oDBFli.CargarPreValidacionBitacoras();
                 Console.WriteLine("*                                                                             *");
                 Console.WriteLine("*                                                                             *");
                 Console.WriteLine("*                                                                             *");
@@ -178,13 +178,11 @@ namespace FileTransfer_MexJet_360
                 Console.WriteLine("*             !!!!   Proceso Finalizado Exitosamente   !!!!                   *");
                 Console.WriteLine("*******************************************************************************");
                 Utils.GuardarBitacora("!!!!   Proceso Finalizado Exitosamente   !!!!");
-                Console.ReadKey();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 Utils.GuardarBitacora("Ocurrio un error: " + ex.Message + ", Paso: "+ MyGlobals.StepLog);
-                Console.ReadKey();
             }
         }
 

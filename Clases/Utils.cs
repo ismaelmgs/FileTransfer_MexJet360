@@ -14,6 +14,7 @@ namespace FileTransfer_MexJet_360.Clases
         {
             try
             {
+                MyGlobals.StepLog = "GuardarBitacora";
                 string path1 = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\BitacorasApp\\";
                 string str = "Bitacora_" + DateTime.Now.ToString("yyyy_MM_dd") + ".txt";
                 if (!Directory.Exists(path1))

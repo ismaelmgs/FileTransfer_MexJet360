@@ -4,6 +4,7 @@
 // MVID: 51C0F2EE-2D8C-4E2B-B102-38D0C4F03E12
 // Assembly location: E:\AerolineasEjecutivas\Codigos\FileTransferMexJet360\ejecutable\FileTransfer_MexJet_360.exe
 
+using FileTransfer_MexJet_360.Clases;
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -22,6 +23,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         {
             try
             {
+                MyGlobals.StepLog = "TestConnection de DBSyteLine";
                 this.oscConnection.ConnectionString = new DBBase(2).oBD_SP.sConexionSQL;
                 this.oscConnection.Open();
                 return true;

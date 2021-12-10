@@ -25,6 +25,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         {
             try
             {
+                MyGlobals.StepLog = "TestConnection de DBFlightPak";
                 this.oscConnection.ConnectionString = new DBBaseFPK().oBD_SP.sConexionSQL;
                 this.oscConnection.Open();
                 return true;
@@ -61,6 +62,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         {
             try
             {
+                MyGlobals.StepLog = "CargarPreValidacionBitacoras";
                 this.oDBALE.EjecutaPreValidacionBitacoras();
             }
             catch (Exception ex)
@@ -73,6 +75,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         {
             try
             {
+                MyGlobals.StepLog = "CargarRegistrosAeropuerto";
                 Utils.GuardarBitacora("Obtiene listado de Airopuertos");
                 DataSet dataSet = new DataSet();
                 DataSet registrosAirport = this.getRegistrosAirport();
@@ -91,6 +94,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         {
             try
             {
+                MyGlobals.StepLog = "CargarRegistrosPiloto";
                 DataSet registrosPilotos = this.getRegistrosPilotos();
                 Console.WriteLine(string.Format("Se cargaran un total de {0} registros.", (object)registrosPilotos.Tables[0].Rows.Count));
                 this.oDBALE.CopiarRegistrosPilotos(registrosPilotos);
@@ -105,6 +109,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         {
             try
             {
+                MyGlobals.StepLog = "CargarRegistrosTripCrew";
                 DataSet registrosTripCrew = this.getRegistrosTripCrew();
                 Console.WriteLine(string.Format("Se cargaran un total de {0} registros.", (object)registrosTripCrew.Tables[0].Rows.Count));
                 this.oDBALE.CopiarRegistrosTripCrew(registrosTripCrew);
@@ -119,6 +124,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         {
             try
             {
+                MyGlobals.StepLog = "CargarRegistrosTripMain";
                 DataSet registrosTripMain = this.getRegistrosTripMain();
                 Console.WriteLine(string.Format("Se cargaran un total de {0} registros.", (object)registrosTripMain.Tables[0].Rows.Count));
                 this.oDBALE.CopiarRegistrosTripMain(registrosTripMain);
@@ -133,6 +139,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         {
             try
             {
+                MyGlobals.StepLog = "CargarRegistrosTripLeg";
                 DataSet registrosTripLeg = this.getRegistrosTripLeg();
                 Console.WriteLine(string.Format("Se cargaran un total de {0} registros.", (object)registrosTripLeg.Tables[0].Rows.Count));
                 this.oDBALE.CopiarRegistrosTripLeg(registrosTripLeg);
@@ -147,6 +154,7 @@ namespace FileTransfer_MexJet_360.DataAccess
         {
             try
             {
+                MyGlobals.StepLog = "CargarRegistrosBitacora";
                 DataSet registrosBitacoras = this.getRegistrosBitacoras();
                 Console.WriteLine(string.Format("Se cargaran un total de {0} registros.", (object)registrosBitacoras.Tables[0].Rows.Count));
                 this.oDBALE.CopiarRegistrosBitacora(registrosBitacoras);
@@ -162,6 +170,7 @@ namespace FileTransfer_MexJet_360.DataAccess
             DataSet dataSet = new DataSet();
             try
             {
+                MyGlobals.StepLog = "getRegistrosAirport";
                 string cmdText;
                 if (string.IsNullOrEmpty(DBALEMexJet.sFechaLastUpdt_Aeropuertos))
                 {
@@ -227,6 +236,7 @@ namespace FileTransfer_MexJet_360.DataAccess
             DataSet dataSet = new DataSet();
             try
             {
+                MyGlobals.StepLog = "getRegistrosPilotos";
                 string cmdText;
                 if (string.IsNullOrEmpty(DBALEMexJet.sFechaLastUpdt_Pilotos))
                 {
@@ -295,6 +305,7 @@ namespace FileTransfer_MexJet_360.DataAccess
             DataSet dataSet = new DataSet();
             try
             {
+                MyGlobals.StepLog = "getRegistrosTripCrew";
                 string cmdText;
                 if (string.IsNullOrEmpty(DBALEMexJet.sUltimaCargaTripCrew))
                 {
@@ -359,6 +370,7 @@ namespace FileTransfer_MexJet_360.DataAccess
             DataSet dataSet = new DataSet();
             try
             {
+                MyGlobals.StepLog = "getRegistrosTripMain";
                 string cmdText;
                 if (string.IsNullOrEmpty(DBALEMexJet.sUltimaCargaTripMain))
                 {
@@ -422,6 +434,7 @@ namespace FileTransfer_MexJet_360.DataAccess
             DataSet dataSet = new DataSet();
             try
             {
+                MyGlobals.StepLog = "getRegistrosTripLeg";
                 string cmdText;
                 if (string.IsNullOrEmpty(DBALEMexJet.sUltimaCargaTripLegs))
                 {
@@ -487,6 +500,7 @@ namespace FileTransfer_MexJet_360.DataAccess
             DataSet dataSet = new DataSet();
             try
             {
+                MyGlobals.StepLog = "getRegistrosBitacoras";
                 string cmdText1;
                 string cmdText2;
                 string cmdText3;
