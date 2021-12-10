@@ -183,7 +183,7 @@ namespace FileTransfer_MexJet_360
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                Utils.GuardarBitacora("Ocurrio un error: " + ex.Message);
+                Utils.GuardarBitacora("Ocurrio un error: " + ex.Message + ", Paso: "+ MyGlobals.StepLog);
                 Console.ReadKey();
             }
         }
