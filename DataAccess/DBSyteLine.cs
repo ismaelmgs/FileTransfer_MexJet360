@@ -10,33 +10,33 @@ using System.Data.SqlClient;
 
 namespace FileTransfer_MexJet_360.DataAccess
 {
-  public class DBSyteLine : DBBase
-  {
-    public string sFechaLAstEjecucion = "";
-    public static string sFechaLastUpdt_Aeropuertos = "";
-    public static string sFechaLastUpdt_Pilotos = "";
-    public static string sFechaLastUpdt_Bitacoras = "";
-    public SqlConnection oscConnection = new SqlConnection();
-
-    public bool TestConnection()
+    public class DBSyteLine : DBBase
     {
-      try
-      {
-        this.oscConnection.ConnectionString = new DBBase(2).oBD_SP.sConexionSQL;
-        this.oscConnection.Open();
-        return true;
-      }
-      catch (SqlException ex)
-      {
-        Console.WriteLine("* {0}                                                                         *", (object) ex.Message.ToString());
-        return false;
-      }
-    }
+        public string sFechaLAstEjecucion = "";
+        public static string sFechaLastUpdt_Aeropuertos = "";
+        public static string sFechaLastUpdt_Pilotos = "";
+        public static string sFechaLastUpdt_Bitacoras = "";
+        public SqlConnection oscConnection = new SqlConnection();
 
-    public string GetMatricula(string AER)
-    {
-      DataSet dataSet = this.oBD_SP.EjecutarDS_DeQuery("select top 1 AeronaveSerie from Aeronave where AeronaveMatricula=" + AER);
-      return !(dataSet.Tables[0].Rows[0][0].ToString() != "") || !(dataSet.Tables[0].Rows[0][0].ToString() != "") ? "" : dataSet.Tables[0].Rows[0][0].ToString();
+        public bool TestConnection()
+        {
+            try
+            {
+                this.oscConnection.ConnectionString = new DBBase(2).oBD_SP.sConexionSQL;
+                this.oscConnection.Open();
+                return true;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("* {0}                                                                         *", (object)ex.Message.ToString());
+                return false;
+            }
+        }
+
+        public string GetMatricula(string AER)
+        {
+            DataSet dataSet = this.oBD_SP.EjecutarDS_DeQuery("select top 1 AeronaveSerie from Aeronave where AeronaveMatricula=" + AER);
+            return !(dataSet.Tables[0].Rows[0][0].ToString() != "") || !(dataSet.Tables[0].Rows[0][0].ToString() != "") ? "" : dataSet.Tables[0].Rows[0][0].ToString();
+        }
     }
-  }
 }

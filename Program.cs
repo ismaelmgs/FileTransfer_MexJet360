@@ -77,7 +77,7 @@ namespace FileTransfer_MexJet_360
                 Console.WriteLine("*                                                                             *");
 
                 if (Program.oDBALE.VerificarUltimoEnvioAeropuertos())
-                    Console.WriteLine(string.Format("* Se Cargaran los registros posteriores a --><{0}>           *", (object) DBALEMexJet.sFechaLastUpdt_Aeropuertos));
+                    Console.WriteLine(string.Format("* Se Cargaran los registros posteriores a --><{0}>           *", (object)DBALEMexJet.sFechaLastUpdt_Aeropuertos));
                 else
                     Console.WriteLine("* Se cargara toda la información proveniente de los bdf's de FlightPak        *");
 
@@ -93,7 +93,7 @@ namespace FileTransfer_MexJet_360
                 Console.WriteLine("*                                                                             *");
 
                 if (Program.oDBALE.VerificarUltimoEnvioPilotos())
-                    Console.WriteLine(string.Format("* Se Cargaran los registros posteriores a --><{0}>           *", (object) DBALEMexJet.sFechaLastUpdt_Pilotos));
+                    Console.WriteLine(string.Format("* Se Cargaran los registros posteriores a --><{0}>           *", (object)DBALEMexJet.sFechaLastUpdt_Pilotos));
                 else
                     Console.WriteLine("* Se cargara toda la información proveniente de los bdf's de FlightPak        *");
 
@@ -110,7 +110,7 @@ namespace FileTransfer_MexJet_360
                 Console.WriteLine("*                                                                             *");
 
                 if (Program.oDBALE.VerificarUltimoEnvioTripCrew())
-                    Console.WriteLine(string.Format("* Se Cargaran los registros posteriores a --><{0}>            *", (object) DBALEMexJet.sUltimaCargaTripCrew));
+                    Console.WriteLine(string.Format("* Se Cargaran los registros posteriores a --><{0}>            *", (object)DBALEMexJet.sUltimaCargaTripCrew));
                 else
                     Console.WriteLine("* Se cargara toda la información proveniente de los bdf's de FlightPak        *");
 
@@ -126,7 +126,7 @@ namespace FileTransfer_MexJet_360
                 Console.WriteLine("*                                                                             *");
 
                 if (Program.oDBALE.VerificarUltimoEnvioBitacoras())
-                    Console.WriteLine(string.Format("* Se Cargaran los registros posteriores a --><{0}>            *", (object) DBALEMexJet.sUltimaCargaBitacorasPOMAIN));
+                    Console.WriteLine(string.Format("* Se Cargaran los registros posteriores a --><{0}>            *", (object)DBALEMexJet.sUltimaCargaBitacorasPOMAIN));
                 else
                     Console.WriteLine("* Se cargara toda la información proveniente de los bdf's de FlightPak        *");
 
@@ -142,7 +142,7 @@ namespace FileTransfer_MexJet_360
                 Console.WriteLine("*                                                                             *");
 
                 if (Program.oDBALE.VerificarUltimoEnvioTripMain())
-                    Console.WriteLine(string.Format("* Se Cargaran los registros posteriores a --><{0}>            *", (object) DBALEMexJet.sUltimaCargaTripMain));
+                    Console.WriteLine(string.Format("* Se Cargaran los registros posteriores a --><{0}>            *", (object)DBALEMexJet.sUltimaCargaTripMain));
                 else
                     Console.WriteLine("* Se cargara toda la información proveniente de los bdf's de FlightPak        *");
 
@@ -159,7 +159,7 @@ namespace FileTransfer_MexJet_360
                 Console.WriteLine("*                                                                             *");
 
                 if (Program.oDBALE.VerificarUltimoEnvioTripLeg())
-                    Console.WriteLine(string.Format("* Se Cargaran los registros posteriores a --><{0}>            *", (object) DBALEMexJet.sUltimaCargaTripLegs));
+                    Console.WriteLine(string.Format("* Se Cargaran los registros posteriores a --><{0}>            *", (object)DBALEMexJet.sUltimaCargaTripLegs));
                 else
                     Console.WriteLine("* Se cargara toda la información proveniente de los bdf's de FlightPak        *");
 
@@ -188,6 +188,5 @@ namespace FileTransfer_MexJet_360
             }
         }
 
-    
-  }
+    }
 }

@@ -14,53 +14,53 @@ using System.Data.Common;
 
 namespace FileTransfer_MexJet_360.DataAccess
 {
-  public class DBBase
-  {
-    public BD_SP oBD_SP = new BD_SP();
-
-    public DBBase() => this.oBD_SP.sConexionSQL = Globales.GetConfigConnection("SqlALEMexJet");
-
-    public DBBase(int idConexion)
+    public class DBBase
     {
-      if (idConexion == 1)
-        this.oBD_SP.sConexionSQL = Globales.GetConfigConnection("SqlALEMexJet");
-      if (idConexion != 2)
-        return;
-      this.oBD_SP.sConexionSQL = Globales.GetConfigConnection("SqlSyteLine");
-    }
+        public BD_SP oBD_SP = new BD_SP();
 
-    public static string conn => ConfigurationManager.ConnectionStrings["SqlALEMexJet"].ConnectionString;
+        public DBBase() => this.oBD_SP.sConexionSQL = Globales.GetConfigConnection("SqlALEMexJet");
 
-    public static string Provider => ConfigurationManager.ConnectionStrings["SqlALEMexJet"].ProviderName;
-
-    public static DbProviderFactory dpf => DbProviderFactories.GetFactory(DBBase.Provider);
-
-    public static int ejecutaNonQuery(string StoredProcedure, List<DbParameter> parametros)
-    {
-      try
-      {
-        int num = 0;
-        using (DbConnection connection = DBBase.dpf.CreateConnection())
+        public DBBase(int idConexion)
         {
-          connection.ConnectionString = DBBase.conn;
-          using (DbCommand command = DBBase.dpf.CreateCommand())
-          {
-            command.Connection = connection;
-            command.CommandText = StoredProcedure;
-            command.CommandType = CommandType.StoredProcedure;
-            command.CommandTimeout = 0;
-            foreach (DbParameter parametro in parametros)
-              command.Parameters.Add((object) parametro);
-            connection.Open();
-            num = command.ExecuteNonQuery();
-          }
+            if (idConexion == 1)
+                this.oBD_SP.sConexionSQL = Globales.GetConfigConnection("SqlALEMexJet");
+            if (idConexion != 2)
+                return;
+            this.oBD_SP.sConexionSQL = Globales.GetConfigConnection("SqlSyteLine");
         }
-        return num;
-      }
-      catch (Exception ex)
-      {
-        throw ex;
-      }
+
+        public static string conn => ConfigurationManager.ConnectionStrings["SqlALEMexJet"].ConnectionString;
+
+        public static string Provider => ConfigurationManager.ConnectionStrings["SqlALEMexJet"].ProviderName;
+
+        public static DbProviderFactory dpf => DbProviderFactories.GetFactory(DBBase.Provider);
+
+        public static int ejecutaNonQuery(string StoredProcedure, List<DbParameter> parametros)
+        {
+            try
+            {
+                int num = 0;
+                using (DbConnection connection = DBBase.dpf.CreateConnection())
+                {
+                    connection.ConnectionString = DBBase.conn;
+                    using (DbCommand command = DBBase.dpf.CreateCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandText = StoredProcedure;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandTimeout = 0;
+                        foreach (DbParameter parametro in parametros)
+                            command.Parameters.Add((object)parametro);
+                        connection.Open();
+                        num = command.ExecuteNonQuery();
+                    }
+                }
+                return num;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
-  }
 }
